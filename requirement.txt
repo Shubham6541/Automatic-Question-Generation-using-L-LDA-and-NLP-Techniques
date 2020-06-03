@@ -1,0 +1,13 @@
+PyMuPDF==1.16.17
+fitz
+numpy==1.18.1
+pandas==0.25.3
+regex==2020.1.8
+gensim==3.8.1
+nltk==3.4.5
+tomotopy==0.7.0
+wikipedia==1.4.0
+google-search==1.0.2
+pickleshare==0.7.5
+matplotlib==3.1.2
+scipy==1.4.1
