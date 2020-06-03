@@ -63,12 +63,6 @@ class myLLDA():
             label_list[i] = lem.lemmatize(label_list[i],pos='n')     
       doc_inst = self.mdl.make_doc(training_words.split())
       topic_dist, ll = self.mdl.infer(doc_inst)
-      # print(type(np.array(mdl.topic_label_dict)))
-      # print(topic_dist[11])
-      # print(topic_dist[np.where(np.array(mdl.topic_label_dict)=='curse')])
-      # print(np.where(np.array(mdl.topic_label_dict)=='curse'))
-      # print("Topic Distribution for Unseen Docs: ", max(topic_dist))     
-      # print("Log-likelihood of inference: ", ll) 
       try:
 
         training_acc[label] = [topic_dist[np.where(np.array(self.mdl.topic_label_dict)==i)[0][0]] for i in label_list]
@@ -184,7 +178,6 @@ class myLLDA():
         i = i.replace('-',' ')
         print('   Q.'+' '+i+'?')
         questions.append(i)
-        #print(i)
       return questions
 
   def cosine_similarity(self, a1, a2):
@@ -210,10 +203,6 @@ class myLLDA():
                 v2.append(w2v[j])
             except KeyError:
                 continue
-        # for v_data in v1:
-        #     for v_ques in v2: 
-        #         temp += cosine_similarity(v_data,v_ques)
-        
         for v_question in v2:
           temp2 = 0
           for v_data in v1:
@@ -226,22 +215,13 @@ class myLLDA():
           temp_avg = np.mean(temp)
         except ValueError:
           temp = 0
-        # try:
-        #   temp /=len(i)
-        # except ZeroDivisionError:
-        #   print("length 0")
-
-        # if(temp > similarity):
-        #     similarity = temp
         question[I] = temp_max
         
         v2 = []
-        # print(np.round(temp/len(test),3),i)
         question_df[I] = [temp_max/len(test_data),temp_avg/len(test_data)]
     return question, question_df 
 
 model = myLLDA()
-# mdl = tp.LLDAModel(tw=tp.TermWeight.IDF)
 dataset = 'lda_dataset_bishop_xx.txt'
 
 model.train_llda(dataset)
@@ -249,13 +229,6 @@ model.training_evaluation(dataset)
 
 test_data = 'Feedforward neural network'
 test_data = (wikipedia.page(test_data).content)
-"""
-file = open('test_data.txt','w') 
-for i in test_data:
-  file.write(i)
-file.close()
-test_data = open('test_data.txt','w').read()
-"""
 test_data = model.preprocess_data(test_data)
 topic_dict = model.testing_llda(test_data)
 weighted_topic_dict, top_topics = model.testing_llda_weighted(topic_dict,test_data)
